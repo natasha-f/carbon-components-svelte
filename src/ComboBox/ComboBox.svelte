@@ -174,7 +174,9 @@
       filteredItems = [];
       if (!selectedItem) {
         selectedId = undefined;
-        // value = "";
+        if (items.filter((item) => item.text === value).length > 0) {
+          value = "";
+        }
         highlightedIndex = -1;
         highlightedId = undefined;
       } else {
@@ -207,18 +209,6 @@
   $: comboId = `combo-${id}`;
   $: highlightedId = items[highlightedIndex] ? items[highlightedIndex].id : 0;
   $: filteredItems = items.filter((item) => shouldFilterItem(item, value));
-
-  $: if (items.filter((item) => item.text === value).length > 0) {
-    items.map((item) => {
-      if (item.text === value) {
-        selectedItem = item;
-        selectedId = item.id;
-      }
-    });
-  } else {
-    selectedItem = undefined;
-    selectedId = undefined;
-  }
 </script>
 
 <svelte:window
@@ -295,6 +285,17 @@
          //   clear();
          //   open = true;
          // }
+          if (items.filter((item) => item.text === value).length > 0) {
+            items.map((item) => {
+              if (item.text === value) {
+                selectedItem = item;
+                selectedId = item.id;
+              }
+            });
+          } else {
+            selectedItem = undefined;
+            selectedId = undefined;
+          }
         }}"
         on:keydown
         on:keydown|stopPropagation="{(e) => {
