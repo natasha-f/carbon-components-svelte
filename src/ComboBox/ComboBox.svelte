@@ -39,6 +39,9 @@
    */
   export let size = undefined;
 
+  /** Set to `true` to use the inline variant */
+  export let inline = false;
+
   /** Set to `true` to disable the combobox */
   export let disabled = false;
 
@@ -219,15 +222,36 @@
   }}"
 />
 
-<div class:bx--list-box__wrapper="{true}">
-  {#if titleText}
-    <label
-      for="{id}"
-      class:bx--label="{true}"
-      class:bx--label--disabled="{disabled}"
-    >
-      {titleText}
-    </label>
+<div class:bx--form-item="{true}"
+     class:bx--text-input-wrapper="{true}"
+     class:bx--text-input-wrapper--inline="{inline}">
+
+  {#if inline}
+    <div class:bx--text-input__label-helper-wrapper="{true}">
+      {#if titleText}
+        <label
+                for="{id}"
+                class:bx--label="{true}"
+                class:bx--label--disabled="{disabled}"
+                class:bx--label--inline="{inline}"
+                class:bx--label--inline--sm="{size === 'sm'}"
+                class:bx--label--inline--xl="{size === 'xl'}"
+        >
+          {titleText}
+        </label>
+      {/if}
+    </div>
+  {/if}
+  {#if !inline}
+    {#if titleText}
+      <label
+        for="{id}"
+        class:bx--label="{true}"
+        class:bx--label--disabled="{disabled}"
+      >
+        {titleText}
+      </label>
+    {/if}
   {/if}
   <ListBox
     class="bx--combo-box {direction === 'top' &&
@@ -242,6 +266,7 @@
     size="{size}"
     warn="{warn}"
     warnText="{warnText}"
+    style="{inline && 'flex: 1;'}"
   >
     <ListBoxField
       role="button"

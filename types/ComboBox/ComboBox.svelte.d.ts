@@ -48,6 +48,12 @@ export interface ComboBoxProps
   size?: "sm" | "xl";
 
   /**
+   * Set to `true` to use the inline variant
+   * @default false
+   */
+  inline?: boolean;
+
+  /**
    * Set to `true` to disable the combobox
    * @default false
    */
