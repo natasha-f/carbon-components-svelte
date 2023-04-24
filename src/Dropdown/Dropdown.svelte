@@ -180,16 +180,33 @@
   class:bx--list-box__wrapper--inline="{inline}"
   class:bx--dropdown__wrapper--inline--invalid="{inline && invalid}"
   {...$$restProps}
+  style="display: flex; grid-gap: unset;"
 >
-  {#if titleText}
+  {#if inline}
+    <div class:bx--text-input__label-helper-wrapper="{true}">
+    {#if titleText}
+      <label
+        for="{id}"
+        class:bx--label="{true}"
+        class:bx--label--disabled="{disabled}"
+        class:bx--visually-hidden="{hideLabel}"
+        style="{size === 'sm' ? 'font-size: var(--cds-label-01-font-size, 0.75rem);' : ''}"
+      >
+        {titleText}
+      </label>
+    {/if}
+    </div>
+  {/if}
+  {#if !inline && titleText}
     <label
-      for="{id}"
-      class:bx--label="{true}"
-      class:bx--label--disabled="{disabled}"
-      class:bx--visually-hidden="{hideLabel}"
-    >
+            for="{id}"
+            class:bx--label="{true}"
+            class:bx--label--disabled="{disabled}"
+            class:bx--visually-hidden="{hideLabel}"
+            style="{size === 'sm' ? 'font-size: var(--cds-label-01-font-size, 0.75rem);' : ''}"
+  >
       {titleText}
-    </label>
+  </label>
   {/if}
   <ListBox
     role="{undefined}"
@@ -207,6 +224,7 @@
       {inline && 'bx--dropdown--inline'}
       {disabled && 'bx--dropdown--disabled'}
       {light && 'bx--dropdown--light'}"
+    style="flex: 1 1 0%; border-bottom: 1px solid var(--cds-border-strong, #8d8d8d);"
     on:click="{({ target }) => {
       if (disabled) return;
       open = ref.contains(target) ? !open : false;
@@ -231,6 +249,7 @@
       bind:this="{ref}"
       type="button"
       class:bx--list-box__field="{true}"
+      style="max-width: unset; padding-left: 1rem; padding-right: 4.5rem;"
       tabindex="0"
       aria-expanded="{open}"
       on:keydown="{(e) => {
@@ -294,6 +313,7 @@
         }}"
         translateWithId="{translateWithId}"
         open="{open}"
+        style="right: 1rem;"
       />
     </button>
     {#if open}
