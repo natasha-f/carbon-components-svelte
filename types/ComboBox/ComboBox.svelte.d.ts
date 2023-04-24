@@ -54,6 +54,12 @@ export interface ComboBoxProps
   inline?: boolean;
 
   /**
+   * Set to `true` to use the editable variant
+   * @default false
+   */
+  editable?: boolean;
+
+  /**
    * Set to `true` to disable the combobox
    * @default false
    */
