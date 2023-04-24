@@ -42,6 +42,9 @@
   /** Set to `true` to use the inline variant */
   export let inline = false;
 
+  /** Set to `true` to use the editable variant */
+  export let editable = false;
+  
   /** Set to `true` to disable the combobox */
   export let disabled = false;
 
@@ -177,8 +180,11 @@
       filteredItems = [];
       if (!selectedItem) {
         selectedId = undefined;
-        if (items.filter((item) => item.text === value).length > 0) {
-          value = "";
+        
+        if (editable) {
+          if (items.filter((item) => item.text === value).length > 0) {
+            value = "";
+          }
         }
         highlightedIndex = -1;
         highlightedId = undefined;
@@ -302,24 +308,27 @@
         class:bx--text-input--light="{light}"
         class:bx--text-input--empty="{value === ''}"
         on:input="{({ target }) => {
-         // if (!open && target.value.length > 0) {
-         //   open = true;
-         // }
+          if (editable) {
             value = target.value;
-         // if (!value.length) {
-         //   clear();
-         //   open = true;
-         // }
-          if (items.filter((item) => item.text === value).length > 0) {
-            items.map((item) => {
-              if (item.text === value) {
-                selectedItem = item;
-                selectedId = item.id;
-              }
-            });
+            if (items.filter((item) => item.text === value).length > 0) {
+              items.map((item) => {
+                if (item.text === value) {
+                  selectedItem = item;
+                  selectedId = item.id;
+                }
+              });
+            } else {
+              selectedItem = undefined;
+              selectedId = undefined;
+            }
           } else {
-            selectedItem = undefined;
-            selectedId = undefined;
+            if (!open && target.value.length > 0) {
+              open = true;
+            }
+            if (!value.length) {
+              clear();
+              open = true;
+            }
           }
         }}"
         on:keydown
@@ -428,7 +437,9 @@
                 return;
               }
               selectedId = item.id;
-              value = item.text;
+              if (editable) {
+                value = item.text;
+              }
               open = false;
 
               if (filteredItems[i]) {
